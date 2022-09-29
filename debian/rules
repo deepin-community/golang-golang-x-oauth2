@@ -1,0 +1,25 @@
+#!/usr/bin/make -f
+
+export DH_GOLANG_INSTALL_EXTRA := google/testdata
+# Avoid running google package tests, that pull a circular dependency.
+export DH_GOLANG_EXCLUDES := google
+export DH_GOLANG_EXCLUDES_ALL := 0
+
+%:
+	dh $@ --buildsystem=golang --with=golang
+
+MAIN_PKG = golang-golang-x-oauth2-dev
+GOOG_PKG = golang-golang-x-oauth2-google-dev
+GOOG_DIR = /usr/share/gocode/src/golang.org/x/oauth2/google
+
+override_dh_auto_install:
+	dh_auto_install
+	# Move golang.org/x/oauth2/google to a separate package.
+	mkdir -v -p `dirname debian/$(GOOG_PKG)$(GOOG_DIR)`
+	mv -v debian/tmp/$(GOOG_DIR) debian/$(GOOG_PKG)$(GOOG_DIR)
+	# Install the rest in the main package.
+	dh_install usr/share/gocode
+
+override_dh_installdocs:
+	# Just symlink the documentation.
+	dh_installdocs --link-doc=$(MAIN_PKG)
