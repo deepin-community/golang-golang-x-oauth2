@@ -6,7 +6,7 @@ export DH_GOLANG_EXCLUDES := google
 export DH_GOLANG_EXCLUDES_ALL := 0
 
 %:
-	dh $@ --buildsystem=golang --with=golang
+	dh $@ --builddirectory=_build --buildsystem=golang
 
 MAIN_PKG = golang-golang-x-oauth2-dev
 GOOG_PKG = golang-golang-x-oauth2-google-dev

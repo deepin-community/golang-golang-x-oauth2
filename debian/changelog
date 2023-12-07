@@ -1,3 +1,63 @@
+golang-golang-x-oauth2 (0.13.0-1) unstable; urgency=medium
+
+  [ M Hickford ]
+  * New upstream version 0.13.0
+
+  [ Anthony Fok ]
+  * Update versioned dependencies as per go.mod
+
+ -- Anthony Fok <foka@debian.org>  Sun, 03 Dec 2023 07:51:28 -0700
+
+golang-golang-x-oauth2 (0.4.0-1) unstable; urgency=medium
+
+  [ M Hickford ]
+  * New upstream version 0.4.0
+
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository-Browse.
+
+  [ Anthony Fok ]
+  * Bump versioned dependencies as per go.mod
+  * Invoke dh with --builddirectory=_build
+
+ -- Anthony Fok <foka@debian.org>  Tue, 11 Jul 2023 02:26:18 -0600
+
+golang-golang-x-oauth2 (0.3.0-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version 0.3.0
+  * Update upstream source repository in debian/copyright
+  * Update Standards-Version to 4.6.2 (no changes)
+
+ -- Shengjing Zhu <zhsj@debian.org>  Sat, 17 Dec 2022 11:12:10 +0800
+
+golang-golang-x-oauth2 (0.1.0-1) unstable; urgency=medium
+
+  * Team upload
+  * Switch to upstream tag version in uscan
+  * New upstream version 0.1.0
+
+ -- Shengjing Zhu <zhsj@debian.org>  Sat, 29 Oct 2022 22:53:19 +0800
+
+golang-golang-x-oauth2 (0.0~git20221006.b44042a-1) unstable; urgency=medium
+
+  * New upstream version 0.0~git20221006.b44042a
+  * Bump versioned dependencies as per go.mod (as much as possible)
+  * Drop unneeded dependency on ${shlibs:Depends}
+  * Bump Standards-Version to 4.6.1 (no change)
+  * debian/docs: Remove AUTHORS and CONTRIBUTORS as per upstream
+
+ -- Anthony Fok <foka@debian.org>  Wed, 12 Oct 2022 11:50:40 -0600
+
+golang-golang-x-oauth2 (0.0~git20211104.d3ed0bb-1) unstable; urgency=medium
+
+  * New upstream version 0.0~git20211104.d3ed0bb
+  * Reorder fields in debian/control and debian/copyright
+    as would be generated in the next dh-make-golang release after 0.6.0-1
+  * Use dh-sequence-golang instead of dh-golang and --with=golang
+
+ -- Anthony Fok <foka@debian.org>  Thu, 16 Dec 2021 01:34:39 -0700
+
 golang-golang-x-oauth2 (0.0~git20210819.2bc19b1-1) unstable; urgency=medium
 
   * New upstream version 0.0~git20210819.2bc19b1
