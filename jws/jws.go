@@ -1,5 +1,5 @@
 // Copyright 2014 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
+// Use of the source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 // Package jws provides a partial implementation
@@ -113,15 +113,37 @@ func (h *Header) encode() (string, error) {
 	return base64.RawURLEncoding.EncodeToString(b), nil
 }
 
+const tokenDelim = '.'
+
+// parseToken parses the three parts of a JWT token.
+// It returns the header, claims, signature, and a boolean indicating success.
+func parseToken(token string) (header, claims, sig string, ok bool) {
+	// The token must have exactly two periods.
+	// Use strings.Cut to avoid allocating a slice.
+	header, token, ok = strings.Cut(token, string(tokenDelim))
+	if !ok {
+		return "", "", "", false
+	}
+	claims, sig, ok = strings.Cut(token, string(tokenDelim))
+	if !ok {
+		return "", "", "", false
+	}
+	// There must be no more periods.
+	if strings.Contains(sig, string(tokenDelim)) {
+		return "", "", "", false
+	}
+	return header, claims, sig, true
+}
+
 // Decode decodes a claim set from a JWS payload.
 func Decode(payload string) (*ClaimSet, error) {
 	// decode returned id token to get expiry
-	s := strings.Split(payload, ".")
-	if len(s) < 2 {
+	_, claims, _, ok := parseToken(payload)
+	if !ok {
 		// TODO(jbd): Provide more context about the error.
 		return nil, errors.New("jws: invalid token received")
 	}
-	decoded, err := base64.RawURLEncoding.DecodeString(s[1])
+	decoded, err := base64.RawURLEncoding.DecodeString(claims)
 	if err != nil {
 		return nil, err
 	}
@@ -165,18 +187,16 @@ func Encode(header *Header, c *ClaimSet, key *rsa.PrivateKey) (string, error) {
 // Verify tests whether the provided JWT token's signature was produced by the private key
 // associated with the supplied public key.
 func Verify(token string, key *rsa.PublicKey) error {
-	parts := strings.Split(token, ".")
-	if len(parts) != 3 {
+	header, claims, sig, ok := parseToken(token)
+	if !ok {
 		return errors.New("jws: invalid token received, token must have 3 parts")
 	}
-
-	signedContent := parts[0] + "." + parts[1]
-	signatureString, err := base64.RawURLEncoding.DecodeString(parts[2])
+	signatureString, err := base64.RawURLEncoding.DecodeString(sig)
 	if err != nil {
 		return err
 	}
 
 	h := sha256.New()
-	h.Write([]byte(signedContent))
+	h.Write([]byte(header + string(tokenDelim) + claims))
 	return rsa.VerifyPKCS1v15(key, crypto.SHA256, h.Sum(nil), signatureString)
 }
