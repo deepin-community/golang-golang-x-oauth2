@@ -1,3 +1,11 @@
+golang-golang-x-oauth2 (0.13.0-1deepin1) unstable; urgency=medium
+
+  * fix: CVE-2025-22868 - unexpected memory consumption in JWS token parsing
+    - Add validation to prevent excessive memory allocation from malformed tokens
+    - Use strings.Count and strings.SplitN instead of strings.Split
+
+ -- deepin-ci-robot <packages@deepin.org>  Tue, 06 May 2026 12:20:00 +0800
+
 golang-golang-x-oauth2 (0.13.0-1) unstable; urgency=medium
 
   [ M Hickford ]
